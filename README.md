@@ -5,6 +5,7 @@ A lightweight Salesforce Flow Screen Component that displays the valid values of
 This lets you use Salesforce's existing Field Dependency configuration without requiring the user to select — or even see — the controlling field.
 
 ![Dynamic Dependent Picklist for Salesforce Flow](docs/dynamic-dependent-picklist-demo.png)
+
 ## Why This Exists
 
 Salesforce Flow can display dependent picklists, but the standard approach expects the user to interact with the controlling field.
@@ -73,7 +74,7 @@ API name of the object containing the controlling and dependent fields.
 Example:
 
 ```text
-Nomination__c
+Contact
 ```
 
 ### Controlling Field API Name
@@ -105,7 +106,7 @@ API name of the dependent picklist field.
 Example:
 
 ```text
-How_did_you_hear_about_Essie__c
+How_did_you_hear_about_us__c
 ```
 
 Only values configured as valid for the specified controlling value are displayed.
@@ -149,14 +150,14 @@ And Salesforce has a Field Dependency between:
 ```text
 Source__c
         ↓
-How_did_you_hear_about_Essie__c
+How_did_you_hear_about_us__c
 ```
 
 Configure Dynamic Dependent Picklist with:
 
 ```text
 Object API Name:
-Nomination__c
+Contact
 
 Controlling Field API Name:
 Source__c
@@ -165,10 +166,10 @@ Controlling Value:
 Online
 
 Dependent Field API Name:
-How_did_you_hear_about_Essie__c
+How_did_you_hear_about_us__c
 ```
 
-The user sees only the **How Did You Hear About Essie?** values Salesforce has configured as valid when Source is `Online`.
+The user sees only the **How Did You Hear About Us?** values Salesforce has configured as valid when Source is `Online`.
 
 If the Field Dependency is later changed in Object Manager, the component automatically uses the updated configuration. There is no second list of choices to maintain in the Flow.
 
