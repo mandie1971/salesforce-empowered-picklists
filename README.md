@@ -4,7 +4,7 @@ A lightweight Salesforce Flow Screen Component that displays only the picklist v
 
 Use Salesforce's own picklist configuration as the source of truth without hard-coding choices in Flow.
 
-![Dynamic Dependent Picklist for Salesforce Flow](docs/dynamic-dependent-picklist-demo.png)
+![Dynamic Dependent Picklist for Salesforce Flow](docs/dynamic-dependent-picklist.png)
 
 ## Why This Exists
 
