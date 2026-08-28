@@ -105,7 +105,8 @@
                 name="selectedValue"
                 type="String"
                 label="Selected Value"
-                description="The API value selected by the user. Use this output to populate the dependent field on your record."
+                description="The selected dependent picklist API value."
+                role="outputOnly"
             />
 
         </targetConfig>

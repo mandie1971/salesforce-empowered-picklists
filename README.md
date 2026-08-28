@@ -131,11 +131,16 @@ The text displayed before the user selects a value.
 
 Determines whether the user must select a value before proceeding.
 
-### Selected Value
+## Selected Value
 
 The component outputs the selected dependent picklist's **API value** to Flow.
 
-Use this output when creating or updating your record.
+Reference **Selected Value directly from the component** wherever you need it in the Flow, including:
+- reactive conditional visibility on the same screen
+- Decisions or Assignments later in the Flow
+- Create Records or Update Records field mappings
+
+You do **not** need to assign Selected Value to a separate Flow variable. Using the component output directly preserves same-screen reactivity and keeps the selected value available later in the Flow.
 
 ## Example
 
