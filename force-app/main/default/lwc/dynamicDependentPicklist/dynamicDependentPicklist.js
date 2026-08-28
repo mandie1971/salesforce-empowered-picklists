@@ -20,11 +20,12 @@ export default class DynamicDependentPicklist extends LightningElement {
     @api required = false;
     @api messageWhenValueMissing = 'Complete this field.';
 
-    // Optional. If omitted, the object's default record type is used.
+    // Optional in Field Dependency mode.
+    // Required in Record Type mode.
     @api recordTypeId;
 
     // -----------------------------
-    // FLOW INPUT / OUTPUT
+    // FLOW OUTPUT
     // -----------------------------
 
     _selectedValue;
@@ -46,6 +47,21 @@ export default class DynamicDependentPicklist extends LightningElement {
     errorMessage;
     resolvedRecordTypeId;
     objectInfo;
+
+    // -----------------------------
+    // MODE
+    // -----------------------------
+
+    get isFieldDependencyMode() {
+        return !!(
+            this.controllingFieldApiName ||
+            this.controllingValue
+        );
+    }
+
+    get isRecordTypeMode() {
+        return !this.isFieldDependencyMode;
+    }
 
     // -----------------------------
     // OBJECT METADATA
@@ -104,52 +120,95 @@ export default class DynamicDependentPicklist extends LightningElement {
             return false;
         }
 
-        if (!this.controllingFieldApiName) {
-            this.setConfigurationError(
-                'A Controlling Field API Name is required.'
-            );
-            return false;
-        }
-
         if (!this.dependentFieldApiName) {
             this.setConfigurationError(
-                'A Dependent Field API Name is required.'
+                'A Picklist Field API Name is required.'
             );
             return false;
         }
-
-        const controllingField =
-            this.objectInfo.fields?.[this.controllingFieldApiName];
 
         const dependentField =
             this.objectInfo.fields?.[this.dependentFieldApiName];
 
-        if (!controllingField) {
-            this.setConfigurationError(
-                `The controlling field "${this.controllingFieldApiName}" was not found on ${this.objectApiName}.`
-            );
-            return false;
-        }
-
         if (!dependentField) {
             this.setConfigurationError(
-                `The dependent field "${this.dependentFieldApiName}" was not found on ${this.objectApiName}.`
+                `The picklist field "${this.dependentFieldApiName}" was not found on ${this.objectApiName}.`
             );
             return false;
         }
 
         /*
-         * controllerName tells us which field Salesforce has configured
-         * as the controlling field for this dependent picklist.
+         * FIELD DEPENDENCY MODE
+         *
+         * If either controlling input is supplied,
+         * both are required.
          */
-        if (
-            dependentField.controllerName !==
-            this.controllingFieldApiName
-        ) {
-            this.setConfigurationError(
-                `"${this.dependentFieldApiName}" is not configured as dependent on "${this.controllingFieldApiName}". Create the Field Dependency in Object Manager first.`
-            );
-            return false;
+        if (this.isFieldDependencyMode) {
+            if (!this.controllingFieldApiName) {
+                this.setConfigurationError(
+                    'A Controlling Field API Name is required when using Field Dependency mode.'
+                );
+                return false;
+            }
+
+            if (!this.controllingValue) {
+                this.setConfigurationError(
+                    'A Controlling Value is required when using Field Dependency mode.'
+                );
+                return false;
+            }
+
+            const controllingField =
+                this.objectInfo.fields?.[
+                    this.controllingFieldApiName
+                ];
+
+            if (!controllingField) {
+                this.setConfigurationError(
+                    `The controlling field "${this.controllingFieldApiName}" was not found on ${this.objectApiName}.`
+                );
+                return false;
+            }
+
+            /*
+             * controllerName tells us which field Salesforce
+             * has configured as the controlling field.
+             */
+            if (
+                dependentField.controllerName !==
+                this.controllingFieldApiName
+            ) {
+                this.setConfigurationError(
+                    `"${this.dependentFieldApiName}" is not configured as dependent on "${this.controllingFieldApiName}". Create the Field Dependency in Object Manager first.`
+                );
+                return false;
+            }
+        }
+
+        /*
+         * RECORD TYPE MODE
+         *
+         * If no controlling field/value is supplied,
+         * an explicit Record Type Id is required.
+         */
+        if (this.isRecordTypeMode) {
+            if (!this.recordTypeId) {
+                this.setConfigurationError(
+                    'A Record Type Id is required when no controlling field and value are supplied.'
+                );
+                return false;
+            }
+
+            /*
+             * A field with a Salesforce Field Dependency
+             * cannot be safely filtered by Record Type alone.
+             */
+            if (dependentField.controllerName) {
+                this.setConfigurationError(
+                    `"${this.dependentFieldApiName}" is configured as a dependent picklist. Supply its Controlling Field API Name and Controlling Value to use Field Dependency mode.`
+                );
+                return false;
+            }
         }
 
         this.errorMessage = null;
@@ -157,7 +216,7 @@ export default class DynamicDependentPicklist extends LightningElement {
     }
 
     // -----------------------------
-    // BUILD FILTERED OPTIONS
+    // BUILD OPTIONS
     // -----------------------------
 
     buildOptions(data) {
@@ -165,17 +224,12 @@ export default class DynamicDependentPicklist extends LightningElement {
             return;
         }
 
-        if (!this.controllingValue) {
-            this.setConfigurationError(
-                'A Controlling Value is required.'
-            );
-            return;
-        }
+        const picklist =
+            data.picklistFieldValues?.[
+                this.dependentFieldApiName
+            ];
 
-        const dependentPicklist =
-            data.picklistFieldValues?.[this.dependentFieldApiName];
-
-        if (!dependentPicklist) {
+        if (!picklist) {
             this.setConfigurationError(
                 `Picklist metadata could not be found for "${this.dependentFieldApiName}".`
             );
@@ -183,6 +237,33 @@ export default class DynamicDependentPicklist extends LightningElement {
         }
 
         /*
+         * RECORD TYPE MODE
+         *
+         * getPicklistValuesByRecordType already returns
+         * only values available for the supplied Record Type.
+         */
+        if (this.isRecordTypeMode) {
+            this.options = (picklist.values || []).map(
+                (picklistValue) => ({
+                    label: picklistValue.label,
+                    value: picklistValue.value
+                })
+            );
+
+            if (this.options.length === 0) {
+                this.setConfigurationError(
+                    `No values from "${this.dependentFieldApiName}" are available for the supplied Record Type Id.`
+                );
+                return;
+            }
+
+            this.finishBuildingOptions();
+            return;
+        }
+
+        /*
+         * FIELD DEPENDENCY MODE
+         *
          * controllerValues looks approximately like:
          *
          * {
@@ -191,11 +272,11 @@ export default class DynamicDependentPicklist extends LightningElement {
          *     "Outreach": 2
          * }
          *
-         * Each dependent value then has a validFor array containing
-         * the controller indexes for which that value is valid.
+         * Each dependent value has a validFor array containing
+         * the controller indexes for which it is valid.
          */
         const controllerValues =
-            dependentPicklist.controllerValues || {};
+            picklist.controllerValues || {};
 
         const controllingIndex =
             controllerValues[this.controllingValue];
@@ -209,11 +290,13 @@ export default class DynamicDependentPicklist extends LightningElement {
             return;
         }
 
-        this.options = (dependentPicklist.values || [])
+        this.options = (picklist.values || [])
             .filter((picklistValue) => {
                 return (
                     Array.isArray(picklistValue.validFor) &&
-                    picklistValue.validFor.includes(controllingIndex)
+                    picklistValue.validFor.includes(
+                        controllingIndex
+                    )
                 );
             })
             .map((picklistValue) => ({
@@ -228,16 +311,21 @@ export default class DynamicDependentPicklist extends LightningElement {
             return;
         }
 
+        this.finishBuildingOptions();
+    }
+
+    finishBuildingOptions() {
         this.errorMessage = null;
 
         /*
-         * If Flow supplied an existing value but it isn't valid for
-         * this controlling value anymore, clear it.
+         * If an existing selected value is no longer valid
+         * for the current configuration, clear it.
          */
         if (
             this._selectedValue &&
             !this.options.some(
-                (option) => option.value === this._selectedValue
+                (option) =>
+                    option.value === this._selectedValue
             )
         ) {
             this._selectedValue = null;

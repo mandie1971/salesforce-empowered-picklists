@@ -1,0 +1,42 @@
+.editor {
+    padding: 0.25rem;
+}
+
+.section-heading {
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    border-bottom: 1px solid #dddbda;
+}
+
+.filter-option {
+    padding: 0.5rem 0;
+}
+
+.option-label {
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.or-divider {
+    display: flex;
+    align-items: center;
+    margin: 0.75rem 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.or-divider::before,
+.or-divider::after {
+    content: '';
+    flex: 1;
+    border-top: 1px solid #dddbda;
+}
+
+.or-divider span {
+    padding: 0 0.75rem;
+}

@@ -1,0 +1,119 @@
+<template>
+    <div class="editor">
+        <lightning-input
+            type="text"
+            label="Object API Name"
+            value={objectApiName}
+            data-name="objectApiName"
+            onchange={handleTextChange}
+            required
+        >
+        </lightning-input>
+
+        <div class="section-heading">
+            Choose One Filtering Method
+        </div>
+
+        <div class="filter-option">
+            <div class="option-label">Option 1 — Record Type</div>
+
+            <lightning-input
+                type="text"
+                label="Record Type Id"
+                value={recordTypeId}
+                data-name="recordTypeId"
+                onchange={handleRecordTypeChange}
+                disabled={recordTypeDisabled}
+                field-level-help="Use this when the Record Type determines which picklist values should be available. Leave the controlling field and value blank."
+            >
+            </lightning-input>
+        </div>
+
+        <div class="or-divider">
+            <span>OR</span>
+        </div>
+
+        <div class="filter-option">
+            <div class="option-label">Option 2 — Field Dependency</div>
+
+            <lightning-input
+                type="text"
+                label="Controlling Field API Name"
+                value={controllingFieldApiName}
+                data-name="controllingFieldApiName"
+                onchange={handleControllingFieldChange}
+                disabled={fieldDependencyDisabled}
+                field-level-help="Use this when filtering by an existing Salesforce Field Dependency. Leave Record Type Id blank unless you also need record-type-specific availability."
+            >
+            </lightning-input>
+
+            <lightning-input
+                type="text"
+                label="Controlling Value"
+                value={controllingValue}
+                data-name="controllingValue"
+                onchange={handleControllingValueChange}
+                disabled={fieldDependencyDisabled}
+                field-level-help="Required when using a Controlling Field. Enter the API value of the controlling picklist value."
+            >
+            </lightning-input>
+        </div>
+
+        <div class="section-heading">
+            Picklist to Display
+        </div>
+
+        <lightning-input
+            type="text"
+            label="Picklist Field API Name"
+            value={dependentFieldApiName}
+            data-name="dependentFieldApiName"
+            onchange={handleTextChange}
+            required
+            field-level-help="API name of the picklist whose filtered values should be displayed."
+        >
+        </lightning-input>
+
+        <div class="section-heading">
+            Display Settings
+        </div>
+
+        <lightning-input
+            type="text"
+            label="Field Label"
+            value={label}
+            data-name="label"
+            onchange={handleTextChange}
+        >
+        </lightning-input>
+
+        <lightning-input
+            type="text"
+            label="Placeholder"
+            value={placeholder}
+            data-name="placeholder"
+            onchange={handleTextChange}
+        >
+        </lightning-input>
+
+        <lightning-input
+            type="checkbox"
+            label="Required"
+            checked={required}
+            data-name="required"
+            onchange={handleBooleanChange}
+        >
+        </lightning-input>
+
+        <template if:true={required}>
+            <lightning-input
+                type="text"
+                label="Required Field Message"
+                value={messageWhenValueMissing}
+                data-name="messageWhenValueMissing"
+                onchange={handleTextChange}
+            >
+            </lightning-input>
+        </template>
+    </div>
+</template>

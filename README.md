@@ -1,16 +1,16 @@
 # Dynamic Dependent Picklist for Salesforce Flow
 
-A lightweight Salesforce Flow Screen Component that displays the valid values of a dependent picklist based on a controlling value already known by the Flow.
+A lightweight Salesforce Flow Screen Component that displays only the picklist values valid for either a specific Record Type or an existing Salesforce Field Dependency.
 
-This lets you use Salesforce's existing Field Dependency configuration without requiring the user to select — or even see — the controlling field.
+Use Salesforce's own picklist configuration as the source of truth without hard-coding choices in Flow.
 
 ![Dynamic Dependent Picklist for Salesforce Flow](docs/dynamic-dependent-picklist-demo.png)
 
 ## Why This Exists
 
-Salesforce Flow can display dependent picklists, but the standard approach expects the user to interact with the controlling field.
+Salesforce Flow doesn't always give you the picklist filtering behavior you need.
 
-Sometimes the Flow already knows the controlling value.
+Sometimes you need to show only the values available for a specific **Record Type**. Other times, the Flow already knows the value of a **controlling field** and there's no reason to ask the user to select — or even see — that field.
 
 For example, imagine an online form with:
 
@@ -19,57 +19,66 @@ For example, imagine an online form with:
 
 If every submission from the form has a Source of `Online`, there's no reason to ask the user to select it.
 
-Dynamic Dependent Picklist lets the Flow supply Online behind the scenes and displays only the dependent picklist values that Salesforce has configured as valid for Online.
+Dynamic Dependent Picklist can supply `Online` behind the scenes and display only the dependent picklist values Salesforce has configured as valid for `Online`.
+
+Or, if a picklist has different values available for different Record Types, the component can display only the values available for the Record Type supplied by the Flow.
 
 No hard-coded choices. No duplicate configuration. No trying to remember every Flow that needs to be updated when a picklist value changes.
 
-Salesforce’s existing Field Dependency remains the single source of truth. Add, remove, or change a dependent value in Object Manager, and the component automatically reflects the current configuration everywhere it’s used.
+Salesforce's existing picklist configuration remains the single source of truth.
 
 ## Features
 
 - No Apex required
 - Uses Salesforce UI API
-- Uses your existing Salesforce Field Dependency as the single source of truth
-- **Never hard-code dependent picklist values in your Flow**
+- Supports **Record Type filtering**
+- Supports existing Salesforce **Field Dependencies**
+- Uses Salesforce picklist configuration as the single source of truth
+- **Never hard-code filtered picklist values in your Flow**
 - **No duplicate lists of choices to maintain**
-- Update the Field Dependency once in Object Manager — every Flow using the component automatically reflects the change
-- Supports record-type-specific picklist values
 - Works in Salesforce Screen Flows
-- Returns the selected API value to Flow
-- Supports required-field validation
+- Returns the selected API value directly to Flow
+- Supports same-screen reactive conditional visibility when the component output is referenced directly
+- Supports required-field validation and a custom required-field message
 - Provides configuration errors when fields or values are misconfigured
+- Includes a custom Flow Builder property editor that clearly separates the two filtering methods
 
 ## Requirements
 
-The controlling and dependent fields must already have a **Field Dependency relationship configured in Salesforce Object Manager**.
+The picklist field must belong to the object specified in **Object API Name**.
 
-Both fields must belong to the same object.
+For **Record Type filtering**, supply the Record Type Id whose available picklist values should be displayed.
+
+For **Field Dependency filtering**, the controlling and dependent fields must already have a **Field Dependency relationship configured in Salesforce Object Manager**, and both fields must belong to the same object.
 
 ## Installation
 
-Copy:
+Copy both component folders:
 
 ```text
 force-app/main/default/lwc/dynamicDependentPicklist
+force-app/main/default/lwc/dynamicDependentPicklistEditor
 ```
 
 into the same location in your Salesforce DX project.
 
-Deploy it with Salesforce CLI:
+Deploy both components with Salesforce CLI:
 
 ```bash
-sf project deploy start --source-dir force-app/main/default/lwc/dynamicDependentPicklist
+sf project deploy start --source-dir force-app/main/default/lwc/dynamicDependentPicklist --source-dir force-app/main/default/lwc/dynamicDependentPicklistEditor
 ```
 
 After deployment, **Dynamic Dependent Picklist** will be available as a Screen Component in Flow Builder.
 
+The `dynamicDependentPicklistEditor` component is used automatically when configuring Dynamic Dependent Picklist in Flow Builder. It does not appear as a separate Flow Screen Component.
+
 ## Flow Configuration
 
-Add **Dynamic Dependent Picklist** to a Flow Screen and configure the following properties.
+Add **Dynamic Dependent Picklist** to a Flow Screen.
 
 ### Object API Name
 
-API name of the object containing the controlling and dependent fields.
+API name of the object containing the picklist field.
 
 Example:
 
@@ -77,72 +86,69 @@ Example:
 Contact
 ```
 
-### Controlling Field API Name
+### Choose One Filtering Method
 
-API name of the controlling field in the existing Salesforce Field Dependency.
+#### Option 1 — Record Type
 
-Example:
+Enter a **Record Type Id** to display only the picklist values available for that Record Type.
 
-```text
-Source__c
-```
+Leave **Controlling Field API Name** and **Controlling Value** blank.
 
-### Controlling Value
+#### Option 2 — Field Dependency
 
-The API value the component should use to filter the dependent picklist.
+Enter the **Controlling Field API Name** and **Controlling Value** from an existing Salesforce Field Dependency.
 
-Example:
-
-```text
-Online
-```
+The controlling value must be the picklist value's **API value**, not its label if those differ.
 
 The controlling field itself is not displayed to the user.
 
-### Dependent Field API Name
+### Picklist Field API Name
 
-API name of the dependent picklist field.
+API name of the picklist field whose filtered values should be displayed.
 
-Example:
+### Display Settings
 
-```text
-How_did_you_hear_about_us__c
-```
-
-Only values configured as valid for the specified controlling value are displayed.
-
-### Record Type Id
-
-Optional.
-
-Supply a Record Type Id if the available picklist values should be based on a particular record type.
-
-If left blank, the object's default record type is used.
-
-### Field Label
-
-The label displayed above the picklist.
-
-### Placeholder
-
-The text displayed before the user selects a value.
-
-### Required
-
-Determines whether the user must select a value before proceeding.
+- **Field Label** — label displayed above the picklist.
+- **Placeholder** — text displayed before the user selects a value.
+- **Required** — determines whether the user must select a value before proceeding.
+- **Required Field Message** — custom validation message displayed when Required is enabled and no value is selected.
 
 ## Selected Value
 
-The component outputs the selected dependent picklist's **API value** to Flow.
+The component outputs the selected picklist's **API value** to Flow.
 
 Reference **Selected Value directly from the component** wherever you need it in the Flow, including:
+
 - reactive conditional visibility on the same screen
 - Decisions or Assignments later in the Flow
 - Create Records or Update Records field mappings
 
 You do **not** need to assign Selected Value to a separate Flow variable. Using the component output directly preserves same-screen reactivity and keeps the selected value available later in the Flow.
 
-## Example
+## Record Type Example
+
+Suppose the available values for a Contact picklist vary by Record Type.
+
+Configure Dynamic Dependent Picklist with:
+
+```text
+Object API Name:
+Contact
+
+Record Type Id:
+{!recordTypeId}
+
+Picklist Field API Name:
+Interest__c
+```
+
+The user sees only the **Interest** values Salesforce has made available for that Record Type.
+
+No controlling field or Field Dependency is required.
+
+If the available picklist values for the Record Type are later changed in Salesforce, the component automatically uses the updated configuration.
+
+## Field Dependency Example
 
 Suppose a Flow-powered online form always uses:
 
@@ -170,7 +176,7 @@ Source__c
 Controlling Value:
 Online
 
-Dependent Field API Name:
+Picklist Field API Name:
 How_did_you_hear_about_us__c
 ```
 
