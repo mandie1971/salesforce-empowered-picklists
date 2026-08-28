@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+
+    <apiVersion>65.0</apiVersion>
+
+    <isExposed>true</isExposed>
+
+    <masterLabel>
+        Dynamic Dependent Picklist
+    </masterLabel>
+
+    <description>
+        Displays the valid values of a dependent picklist for a specified controlling value. IMPORTANT: The controlling and dependent fields must already have a Field Dependency relationship configured in Object Manager.
+    </description>
+
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+
+    <targetConfigs>
+
+        <targetConfig targets="lightning__FlowScreen">
+
+            <property
+                name="objectApiName"
+                type="String"
+                label="Object API Name"
+                description="API name of the object containing both fields. Example: Nomination__c"
+                role="inputOnly"
+                required="true"
+            />
+
+            <property
+                name="controllingFieldApiName"
+                type="String"
+                label="Controlling Field API Name"
+                description="API name of the controlling field in an existing Salesforce Field Dependency. The field itself will not be shown to the user."
+                role="inputOnly"
+                required="true"
+            />
+
+            <property
+                name="controllingValue"
+                type="String"
+                label="Controlling Value"
+                description="The predetermined API value of the controlling field. Example: Online. The user will not be asked to select this value."
+                role="inputOnly"
+                required="true"
+            />
+
+            <property
+                name="dependentFieldApiName"
+                type="String"
+                label="Dependent Field API Name"
+                description="API name of the dependent picklist. This field must already be configured as dependent on the Controlling Field in Object Manager."
+                role="inputOnly"
+                required="true"
+            />
+
+            <property
+                name="recordTypeId"
+                type="String"
+                label="Record Type Id"
+                description="Optional. Leave blank to use the object's default record type. Supply a Record Type Id if the available picklist values should be based on a specific record type."
+                role="inputOnly"
+            />
+
+            <property
+                name="label"
+                type="String"
+                label="Field Label"
+                description="Label displayed above the dependent picklist."
+                role="inputOnly"
+                default="Select an option"
+            />
+
+            <property
+                name="placeholder"
+                type="String"
+                label="Placeholder"
+                description="Text displayed before the user selects a value."
+                role="inputOnly"
+                default="Select..."
+            />
+
+            <property
+                name="required"
+                type="Boolean"
+                label="Required"
+                description="Require the user to select a dependent picklist value before continuing."
+                role="inputOnly"
+                default="false"
+            />
+
+            <property
+                name="messageWhenValueMissing"
+                type="String"
+                label="Required Field Message"
+                description="Validation message displayed when Required is selected and the user has not chosen a value."
+                role="inputOnly"
+                default="Complete this field."
+            />
+
+            <property
+                name="selectedValue"
+                type="String"
+                label="Selected Value"
+                description="The API value selected by the user. Use this output to populate the dependent field on your record."
+            />
+
+        </targetConfig>
+
+    </targetConfigs>
+
+</LightningComponentBundle>

@@ -1,0 +1,21 @@
+<template>
+    <lightning-combobox
+        name="dependentPicklist"
+        label={label}
+        value={selectedValue}
+        placeholder={placeholder}
+        options={options}
+        required={required}
+        disabled={isDisabled}
+        message-when-value-missing={messageWhenValueMissing}
+        onchange={handleChange}>
+    </lightning-combobox>
+
+    <template lwc:if={errorMessage}>
+        <div
+            class="slds-text-color_error slds-m-top_x-small"
+            role="alert">
+            {errorMessage}
+        </div>
+    </template>
+</template>
