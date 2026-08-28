@@ -4,6 +4,7 @@ A lightweight Salesforce Flow Screen Component that displays the valid values of
 
 This lets you use Salesforce's existing Field Dependency configuration without requiring the user to select — or even see — the controlling field.
 
+![Dynamic Dependent Picklist for Salesforce Flow](docs/dynamic-dependent-picklist-demo.png)
 ## Why This Exists
 
 Salesforce Flow can display dependent picklists, but the standard approach expects the user to interact with the controlling field.
