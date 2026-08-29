@@ -1,12 +1,21 @@
 {
   "packageDirectories": [
     {
+      "versionName": "Version 1.0",
+      "versionNumber": "1.0.0.NEXT",
       "path": "force-app",
-      "default": true
+      "default": true,
+      "package": "Dynamic Dependent Picklist",
+      "versionDescription": ""
     }
   ],
   "name": "picklistLWC",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "67.0"
+  "sourceApiVersion": "67.0",
+  "packageAliases": {
+    "Dynamic Dependent Picklist": "0Hofj0000003nYrCAI",
+    "Dynamic Dependent Picklist@1.0.0-1": "04tfj000000Ui21AAC",
+    "Dynamic Dependent Picklist@1.0.0-2": "04tfj000000Ui3dAAC"
+  }
 }

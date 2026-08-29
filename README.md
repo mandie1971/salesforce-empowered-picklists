@@ -53,7 +53,21 @@ For **Field Dependency filtering**, the controlling and dependent fields must al
 
 ## Installation
 
-Copy both component folders:
+### Install the Package
+
+The easiest way to install Dynamic Dependent Picklist is with the released unlocked package:
+
+- **Production / Developer Edition:**  
+  https://login.salesforce.com/packaging/installPackage.apexp?p0=04tfj000000Ui3dAAC
+
+- **Sandbox:**  
+  https://test.salesforce.com/packaging/installPackage.apexp?p0=04tfj000000Ui3dAAC
+
+This installs **Dynamic Dependent Picklist v1.0.0** and its Flow Builder configuration editor.
+
+### Deploy from Source
+
+If you prefer to deploy from source, copy both component folders:
 
 ```text
 force-app/main/default/lwc/dynamicDependentPicklist
