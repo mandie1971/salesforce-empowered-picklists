@@ -1,11 +1,11 @@
 {
   "packageDirectories": [
     {
-      "versionName": "Version 1.0",
-      "versionNumber": "1.0.0.NEXT",
+      "versionName": "Version 1.0.1",
+      "versionNumber": "1.0.1.NEXT",
       "path": "force-app",
       "default": true,
-      "package": "Dynamic Dependent Picklist",
+      "package": "Empowered Picklists",
       "versionDescription": ""
     }
   ],
@@ -14,8 +14,9 @@
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "67.0",
   "packageAliases": {
-    "Dynamic Dependent Picklist": "0Hofj0000003nYrCAI",
-    "Dynamic Dependent Picklist@1.0.0-1": "04tfj000000Ui21AAC",
-    "Dynamic Dependent Picklist@1.0.0-2": "04tfj000000Ui3dAAC"
+    "Empowered Picklists": "0Hofj0000003nYrCAI",
+    "Empowered Picklists@1.0.0-1": "04tfj000000Ui21AAC",
+    "Empowered Picklists@1.0.0-2": "04tfj000000Ui3dAAC",
+    "Empowered Picklists@1.0.1-1": "04tfj000000mIU5AAM"
   }
 }

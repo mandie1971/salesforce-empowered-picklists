@@ -1,10 +1,10 @@
-# Dynamic Dependent Picklist for Salesforce Flow
+# Empowered Picklists for Salesforce Flow
 
 A lightweight Salesforce Flow Screen Component that displays only the picklist values valid for either a specific Record Type or an existing Salesforce Field Dependency.
 
 Use Salesforce's own picklist configuration as the source of truth without hard-coding choices in Flow.
 
-![Dynamic Dependent Picklist for Salesforce Flow](docs/dynamic-dependent-picklist.png)
+![Empowered Picklists for Salesforce Flow](docs/dynamic-dependent-picklist.png)
 
 ## Why This Exists
 
@@ -19,7 +19,7 @@ For example, imagine an online form with:
 
 If every submission from the form has a Source of `Online`, there's no reason to ask the user to select it.
 
-Dynamic Dependent Picklist can supply `Online` behind the scenes and display only the dependent picklist values Salesforce has configured as valid for `Online`.
+Empowered Picklists can supply `Online` behind the scenes and display only the dependent picklist values Salesforce has configured as valid for `Online`.
 
 Or, if a picklist has different values available for different Record Types, the component can display only the values available for the Record Type supplied by the Flow.
 
@@ -55,15 +55,15 @@ For **Field Dependency filtering**, the controlling and dependent fields must al
 
 ### Install the Package
 
-The easiest way to install Dynamic Dependent Picklist is with the released unlocked package:
+The easiest way to install Empowered Picklists is with the released unlocked package:
 
 - **Production / Developer Edition:**  
-  https://login.salesforce.com/packaging/installPackage.apexp?p0=04tfj000000Ui3dAAC
+  https://login.salesforce.com/packaging/installPackage.apexp?p0=04tfj000000mIU5AAM
 
 - **Sandbox:**  
-  https://test.salesforce.com/packaging/installPackage.apexp?p0=04tfj000000Ui3dAAC
+  https://test.salesforce.com/packaging/installPackage.apexp?p0=04tfj000000mIU5AAM
 
-This installs **Dynamic Dependent Picklist v1.0.0** and its Flow Builder configuration editor.
+This installs **Empowered Picklists v1.0.1** and its Flow Builder configuration editor.
 
 ### Deploy from Source
 
@@ -82,13 +82,13 @@ Deploy both components with Salesforce CLI:
 sf project deploy start --source-dir force-app/main/default/lwc/dynamicDependentPicklist --source-dir force-app/main/default/lwc/dynamicDependentPicklistEditor
 ```
 
-After deployment, **Dynamic Dependent Picklist** will be available as a Screen Component in Flow Builder.
+After deployment, **Empowered Picklists** will be available as a Screen Component in Flow Builder.
 
-The `dynamicDependentPicklistEditor` component is used automatically when configuring Dynamic Dependent Picklist in Flow Builder. It does not appear as a separate Flow Screen Component.
+The `dynamicDependentPicklistEditor` component is used automatically when configuring Empowered Picklists in Flow Builder. It does not appear as a separate Flow Screen Component.
 
 ## Flow Configuration
 
-Add **Dynamic Dependent Picklist** to a Flow Screen.
+Add **Empowered Picklists** to a Flow Screen.
 
 ### Object API Name
 
@@ -143,7 +143,7 @@ You do **not** need to assign Selected Value to a separate Flow variable. Using 
 
 Suppose the available values for a Contact picklist vary by Record Type.
 
-Configure Dynamic Dependent Picklist with:
+Configure Empowered Picklists with:
 
 ```text
 Object API Name:
@@ -178,7 +178,7 @@ Source__c
 How_did_you_hear_about_us__c
 ```
 
-Configure Dynamic Dependent Picklist with:
+Configure Empowered Picklists with:
 
 ```text
 Object API Name:

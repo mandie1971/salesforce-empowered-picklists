@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>65.0</apiVersion>
     <isExposed>true</isExposed>
 
-    <masterLabel>Dynamic Dependent Picklist</masterLabel>
+    <masterLabel>Empowered Picklists</masterLabel>
 
     <description>
         Displays picklist values filtered by Record Type or by an existing Salesforce Field Dependency.
@@ -15,76 +15,76 @@
 
     <targetConfigs>
         <targetConfig
-            targets="lightning__FlowScreen"
-            configurationEditor="c-dynamic-dependent-picklist-editor"
-        >
+      targets="lightning__FlowScreen"
+      configurationEditor="c-dynamic-dependent-picklist-editor"
+    >
 
             <property
-                name="objectApiName"
-                type="String"
-                label="Object API Name"
-                required="true"
-            />
+        name="objectApiName"
+        type="String"
+        label="Object API Name"
+        required="true"
+      />
 
             <property
-                name="recordTypeId"
-                type="String"
-                label="Record Type Id"
-            />
+        name="recordTypeId"
+        type="String"
+        label="Record Type Id"
+      />
 
             <property
-                name="controllingFieldApiName"
-                type="String"
-                label="Controlling Field API Name"
-            />
+        name="controllingFieldApiName"
+        type="String"
+        label="Controlling Field API Name"
+      />
 
             <property
-                name="controllingValue"
-                type="String"
-                label="Controlling Value"
-            />
+        name="controllingValue"
+        type="String"
+        label="Controlling Value"
+      />
 
             <property
-                name="dependentFieldApiName"
-                type="String"
-                label="Picklist Field API Name"
-                required="true"
-            />
+        name="dependentFieldApiName"
+        type="String"
+        label="Picklist Field API Name"
+        required="true"
+      />
 
             <property
-                name="label"
-                type="String"
-                label="Field Label"
-                default="Select an option"
-            />
+        name="label"
+        type="String"
+        label="Field Label"
+        default="Select an option"
+      />
 
             <property
-                name="placeholder"
-                type="String"
-                label="Placeholder"
-                default="Select..."
-            />
+        name="placeholder"
+        type="String"
+        label="Placeholder"
+        default="Select..."
+      />
 
             <property
-                name="required"
-                type="Boolean"
-                label="Required"
-                default="false"
-            />
+        name="required"
+        type="Boolean"
+        label="Required"
+        default="false"
+      />
 
             <property
-                name="messageWhenValueMissing"
-                type="String"
-                label="Required Field Message"
-                default="Complete this field."
-            />
+        name="messageWhenValueMissing"
+        type="String"
+        label="Required Field Message"
+        default="Complete this field."
+      />
 
             <property
-                name="selectedValue"
-                type="String"
-                label="Selected Value"
-                role="outputOnly"
-            />
+        name="selectedValue"
+        type="String"
+        label="Selected Value"
+        role="outputOnly"
+      />
 
         </targetConfig>
     </targetConfigs>
